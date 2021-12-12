@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Jesko Mueller (c) 2021
 ZHAW CCP1-PERF | Performance Analysis Example Lab
@@ -20,6 +18,7 @@ client = bmemcached.Client(('memcached-server:11211', ))
 def get_locations() -> tuple:
     """get historical locations from a study"""
     # animal movement data: https://github.com/movebank/movebank-api-doc/blob/master/movebank-api.md#introduction
+    # this is just a set of more or less sensible location data so we don't need to generate new data...
     response = request.urlopen('https://www.movebank.org/movebank/service/public/json?study_id=2911040&'
                                 'individual_local_identifiers=1163-1163&sensor_type=gps')
     obj = json.loads(response.read())
@@ -28,7 +27,7 @@ def get_locations() -> tuple:
     return (locs, len(locs)) # list of location dicts and length
 
 
-def set_pos(locs: list, item: int) -> dict:
+def set_pos(locs: list, item: int) -> None:
     """set x-wing position with memcached"""
     location = locs[item]
     coord = {'time': datetime.utcfromtimestamp(location['timestamp']/1000).strftime('%Y-%m-%d %H:%M:%S'),

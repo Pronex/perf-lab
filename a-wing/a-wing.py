@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 Jesko Mueller (c) 2021
 ZHAW CCP1-PERF | Performance Analysis Example Lab
