@@ -1,0 +1,123 @@
+# Jesko Mueller (c) 2021
+# ZHAW CCP1-PERF | Performance Analysis Example Lab
+# setup k8s deployment
+
+---
+# memcached server pod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcached-server
+spec:
+  selector:
+    matchLabels:
+      app: memcd-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: memcd-server
+    spec:
+      containers:
+      - name: memcached
+        image: memcached
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 11211
+        resources:
+          limits:
+            cpu: 250m
+            memory: 30Mi
+
+---
+# memcached service
+apiVersion: v1
+kind: Service
+metadata:
+  name: memcached-server
+  labels:
+    app: memcd-server
+spec:
+  ports:
+  - port: 11211
+    name: memcached-port
+    targetPort: 11211
+    protocol: TCP
+  selector:
+    app: memcd-server
+  clusterIP: None
+
+---
+# a-wing pod (memcached client | binary)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: a-wing
+spec:
+  selector:
+    matchLabels:
+      app: a-wing
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: a-wing
+    spec:
+      containers:
+      - name: a-wing
+        image: diegomueller/a-wing:v0.1
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 500Mi
+
+---
+# x-wing pod (memcached client | text)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: x-wing
+spec:
+  selector:
+    matchLabels:
+      app: x-wing
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: x-wing
+    spec:
+      containers:
+      - name: x-wing
+        image: diegomueller/x-wing:v0.1
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 500Mi
+
+---
+# aliance tracker pod (memcached client | binary)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alliance-tracker
+spec:
+  selector:
+    matchLabels:
+      name: fleet-tracker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: fleet-tracker
+    spec:
+      containers:
+      - name: alliance-tracker
+        image: diegomueller/tracker:v0.1
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 100m
+            memory: 500Mi
