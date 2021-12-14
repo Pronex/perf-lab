@@ -26,7 +26,7 @@ spec:
         - containerPort: 11211
         resources:
           limits:
-            cpu: 250m
+            cpu: 100m
             memory: 30Mi
 
 ---
@@ -70,7 +70,7 @@ spec:
         resources:
           limits:
             cpu: 100m
-            memory: 500Mi
+            memory: 300Mi
 
 ---
 # x-wing pod (memcached client | text)
@@ -95,7 +95,7 @@ spec:
         resources:
           limits:
             cpu: 100m
-            memory: 500Mi
+            memory: 300Mi
 
 ---
 # aliance tracker pod (memcached client | binary)
@@ -120,4 +120,4 @@ spec:
         resources:
           limits:
             cpu: 100m
-            memory: 500Mi
+            memory: 400Mi
